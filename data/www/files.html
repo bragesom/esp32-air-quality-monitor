@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Files — AQ-Meter Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="nav-title">📁 Files</h1>
+            <div class="nav-controls">
+                <div class="real-time-clock">
+                    <div id="currentTime" class="clock-display">--:--:--</div>
+                    <div id="currentDate" class="date-display">----/--/--</div>
+                </div>
+                <nav class="nav-links">
+                    <a href="/" class="nav-link">🏠 Dashboard</a>
+                    <a href="/chart.html" class="nav-link">📊 Charts</a>
+                    <a href="/clock.html" class="nav-link">🕐 Time</a>
+                </nav>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card storage-info">
+            <h2>💾 SD Card</h2>
+            <div class="storage-stats">
+                <div class="stat-item"><span class="stat-label">Total</span><span id="totalSpace" class="stat-value">--</span></div>
+                <div class="stat-item"><span class="stat-label">Used</span><span id="usedSpace" class="stat-value">--</span></div>
+                <div class="stat-item"><span class="stat-label">Free</span><span id="freeSpace" class="stat-value">--</span></div>
+                <div class="stat-item"><span class="stat-label">Files</span><span id="fileCount" class="stat-value">--</span></div>
+            </div>
+            <div class="storage-bar"><div id="storageProgress" class="storage-progress"></div></div>
+        </div>
+
+        <div class="card file-list">
+            <div class="file-controls">
+                <h2>📋 Files</h2>
+                <span id="currentPathLabel" class="current-path">/</span>
+                <button id="refreshBtn" class="refresh-btn">🔄 Refresh</button>
+            </div>
+            <div class="file-table-container">
+                <table class="file-table">
+                    <thead>
+                        <tr><th></th><th>Name</th><th>Size</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody id="fileList">
+                        <tr><td colspan="4" class="loading-message">Loading…</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="previewModal" class="modal hidden">
+        <div class="modal-content file-preview">
+            <div class="modal-header">
+                <h2 id="previewTitle">Preview</h2>
+                <button id="previewClose" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="previewContent" class="preview-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <div id="connectionStatus" class="connection-status">
+        <span id="wsStatus">🔗 Connecting…</span>
+    </div>
+
+    <script src="common.js"></script>
+    <script src="files.js"></script>
+</body>
+</html>

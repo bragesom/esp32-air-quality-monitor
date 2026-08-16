@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Sync — AQ-Meter Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card time-sync-card">
+            <h1>🕐 Time Synchronization</h1>
+            <p class="info-text">The device syncs to your browser's clock automatically. Use the button below to re-sync (e.g. to correct drift).</p>
+
+            <div class="time-display">
+                <div class="time-section">
+                    <h3>Browser</h3>
+                    <div id="browserTime" class="time-value">--:--:--</div>
+                    <div id="browserDate" class="date-value">--</div>
+                </div>
+                <div class="time-section">
+                    <h3>Device</h3>
+                    <div id="deviceTime" class="time-value">Not Set</div>
+                    <div id="deviceDate" class="date-value">--</div>
+                </div>
+            </div>
+
+            <div class="sync-controls">
+                <button id="syncBtn">🔄 Synchronize Now</button>
+                <div id="syncStatus" class="status"></div>
+            </div>
+
+            <div class="timezone-info">
+                <p><strong>Timezone:</strong> <span id="timezone">--</span></p>
+                <p><a href="/" class="nav-link">← Back to dashboard</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="connectionStatus" class="connection-status"><span id="wsStatus">🔗 Connecting…</span></div>
+
+    <script src="common.js"></script>
+    <script>
+        function updateBrowserTime() {
+            const now = new Date();
+            $('browserTime').textContent = now.toLocaleTimeString();
+            $('browserDate').textContent = now.toLocaleDateString();
+            $('timezone').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        }
+
+        // Device time pushed over WebSocket.
+        window.onTime = function (m) {
+            if (m.timestamp) {
+                const d = new Date(m.timestamp * 1000);
+                $('deviceTime').textContent = d.toLocaleTimeString();
+                $('deviceDate').textContent = d.toLocaleDateString();
+            }
+        };
+
+        async function syncNow() {
+            const btn = $('syncBtn'), status = $('syncStatus');
+            btn.disabled = true;
+            status.className = 'status info';
+            status.textContent = 'Sending time…';
+            try {
+                const now = Math.floor(Date.now() / 1000);
+                const res = await (await fetch('/api/timeset', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ timestamp: now })
+                })).json();
+                if (res.success) {
+                    status.className = 'status success';
+                    status.textContent = '✅ Synchronized. Redirecting…';
+                    setTimeout(() => { window.location.href = '/'; }, 1200);
+                } else {
+                    throw new Error(res.error || 'Failed');
+                }
+            } catch (e) {
+                status.className = 'status error';
+                status.textContent = '❌ ' + e.message;
+                btn.disabled = false;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            initCommon();
+            updateBrowserTime();
+            setInterval(updateBrowserTime, 1000);
+            $('syncBtn').addEventListener('click', syncNow);
+        });
+    </script>
+</body>
+</html>

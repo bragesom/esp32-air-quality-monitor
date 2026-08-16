@@ -1,0 +1,42 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  firmware:
+    name: PlatformIO build (esp32_3mb)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Cache PlatformIO
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.platformio
+            ~/.cache/pip
+          key: pio-${{ runner.os }}-${{ hashFiles('platformio.ini') }}
+          restore-keys: pio-${{ runner.os }}-
+
+      - name: Install PlatformIO
+        run: pip install --upgrade platformio
+
+      # secrets.h is gitignored. Building against the committed template also
+      # proves the template itself still compiles.
+      - name: Provide credentials header
+        run: cp src/secrets.example.h src/secrets.h
+
+      - name: Build firmware
+        run: pio run
+
+      - name: Build SPIFFS image
+        run: pio run --target buildfs

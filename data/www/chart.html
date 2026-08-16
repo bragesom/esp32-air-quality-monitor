@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charts — AQ-Meter Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="nav-title">📊 Charts</h1>
+            <div class="nav-controls">
+                <div class="real-time-clock">
+                    <div id="currentTime" class="clock-display">--:--:--</div>
+                    <div id="currentDate" class="date-display">----/--/--</div>
+                </div>
+                <nav class="nav-links">
+                    <a href="/" class="nav-link">🏠 Dashboard</a>
+                    <a href="/files.html" class="nav-link">📁 Files</a>
+                    <a href="/clock.html" class="nav-link">🕐 Time</a>
+                </nav>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card controls-card">
+            <h2>Chart Configuration</h2>
+            <div class="controls-grid">
+                <div class="control-group">
+                    <label for="chartType">Metric</label>
+                    <select id="chartType">
+                        <option value="co2">CO₂ (ppm)</option>
+                        <option value="temperature">Temperature (°C)</option>
+                        <option value="humidity">Humidity (%)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="timeRange">Time Range</label>
+                    <select id="timeRange">
+                        <option value="3600">Last Hour</option>
+                        <option value="86400">Last 24 Hours</option>
+                        <option value="604800">Last 7 Days</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <button id="refreshBtn" class="refresh-btn">🔄 Refresh</button>
+                    <button id="exportBtn" class="export-btn">📤 Export CSV</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card main-chart-card">
+            <div class="chart-header">
+                <h3 id="chartTitle">🌫️ CO₂</h3>
+                <div class="chart-info">
+                    <span class="current-value" id="currentValue">--</span>
+                    <span class="chart-status" id="chartStatus">--</span>
+                </div>
+            </div>
+            <div class="chart-container large">
+                <canvas id="mainChart"></canvas>
+            </div>
+            <div class="chart-stats">
+                <div class="stat-item"><span class="stat-label">Min:</span> <span class="stat-value" id="minValue">--</span></div>
+                <div class="stat-item"><span class="stat-label">Max:</span> <span class="stat-value" id="maxValue">--</span></div>
+                <div class="stat-item"><span class="stat-label">Avg:</span> <span class="stat-value" id="avgValue">--</span></div>
+                <div class="stat-item"><span class="stat-label">Samples:</span> <span class="stat-value" id="sampleCount">--</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="connectionStatus" class="connection-status">
+        <span id="wsStatus">🔗 Connecting…</span>
+    </div>
+
+    <script src="common.js"></script>
+    <script src="chart-lite.js"></script>
+    <script src="charts.js"></script>
+</body>
+</html>

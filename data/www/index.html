@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQ-Meter Pro — Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="nav-title">🌬️ AQ-Meter</h1>
+            <div class="nav-controls">
+                <div class="real-time-clock">
+                    <div id="currentTime" class="clock-display">--:--:--</div>
+                    <div id="currentDate" class="date-display">----/--/--</div>
+                </div>
+                <nav class="nav-links">
+                    <a href="/chart.html" class="nav-link">📊 Charts</a>
+                    <a href="/files.html" class="nav-link">📁 Files</a>
+                    <a href="/clock.html" class="nav-link">🕐 Time</a>
+                </nav>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="status-bar">
+            <div class="status-item"><span id="wifiStatus" class="status-indicator">📶</span><span id="wifiText">WiFi</span></div>
+            <div class="status-item"><span id="sensorStatus" class="status-indicator">🌡️</span><span id="sensorText">Sensor</span></div>
+            <div class="status-item"><span id="sdStatus" class="status-indicator">💾</span><span id="sdText">SD Card</span></div>
+            <div class="status-item"><span id="timeStatus" class="status-indicator">🕐</span><span id="timeText">Time</span></div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card readings-card">
+                <h2>Current Readings</h2>
+                <div class="metrics-grid">
+                    <a href="/chart.html?type=co2&range=3600" class="metric-link">
+                        <div class="metric co2-metric">
+                            <div class="metric-icon">🌫️</div>
+                            <div class="metric-value" id="co2Value">--</div>
+                            <div class="metric-unit">ppm CO₂</div>
+                            <div class="metric-status" id="co2Status">--</div>
+                        </div>
+                    </a>
+                    <a href="/chart.html?type=temperature&range=3600" class="metric-link">
+                        <div class="metric temp-metric">
+                            <div class="metric-icon">🌡️</div>
+                            <div class="metric-value" id="tempValue">--</div>
+                            <div class="metric-unit">°C</div>
+                            <div class="metric-status" id="tempStatus">--</div>
+                        </div>
+                    </a>
+                    <a href="/chart.html?type=humidity&range=3600" class="metric-link">
+                        <div class="metric humidity-metric">
+                            <div class="metric-icon">💧</div>
+                            <div class="metric-value" id="humidityValue">--</div>
+                            <div class="metric-unit">% RH</div>
+                            <div class="metric-status" id="humidityStatus">--</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="last-updated">Last updated: <span id="lastUpdated">--</span></div>
+            </div>
+
+            <div class="card chart-preview-card">
+                <h2>CO₂ — Last Hour</h2>
+                <div class="mini-chart-container">
+                    <canvas id="miniChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card settings-card">
+                <h2>⚙️ Settings</h2>
+                <div class="control-group">
+                    <label for="intervalInput">Measurement interval (seconds, 10–1800)</label>
+                    <div class="inline-controls">
+                        <input type="number" id="intervalInput" min="10" max="1800" step="1">
+                        <button id="intervalSave" class="refresh-btn">Save</button>
+                    </div>
+                </div>
+                <p class="hint">The SCD30 measures at most every 1800 s (30 min). Shorter intervals write to the SD card more often.</p>
+                <div id="settingsStatus" class="status"></div>
+            </div>
+
+            <div class="card calibration-card">
+                <h2>🧪 Calibration</h2>
+
+                <div class="control-group">
+                    <label class="toggle-row">
+                        <input type="checkbox" id="ascToggle">
+                        <span>Automatic self-calibration (ASC)</span>
+                    </label>
+                    <p class="hint">Off by default. ASC only works if the room reliably reaches fresh-air CO₂ (~400 ppm) — e.g. aired daily. Leave it off for a closed room.</p>
+                </div>
+
+                <div class="control-group">
+                    <label for="tempOffsetInput">Temperature offset (°C)</label>
+                    <div class="inline-controls">
+                        <input type="number" id="tempOffsetInput" min="0" max="20" step="0.1">
+                        <button id="tempOffsetSave" class="refresh-btn">Save</button>
+                    </div>
+                    <p class="hint">Compensates the sensor's own self-heating (reported = measured − offset).</p>
+                </div>
+
+                <div class="control-group">
+                    <label for="frcInput">Forced recalibration (ppm, 400–2000)</label>
+                    <p class="hint">Put the sensor in stable outdoor air for at least 2 minutes, then calibrate to the reference (outdoor air ≈ 420 ppm).</p>
+                    <div class="inline-controls">
+                        <input type="number" id="frcInput" min="400" max="2000" step="1" value="420">
+                        <button id="frcApply" class="export-btn">Calibrate now</button>
+                    </div>
+                </div>
+
+                <div class="last-updated">Last calibration: <span id="lastCal">—</span></div>
+                <div id="calStatus" class="status"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="connectionStatus" class="connection-status">
+        <span id="wsStatus">🔗 Connecting…</span>
+    </div>
+
+    <script src="common.js"></script>
+    <script src="chart-lite.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
