@@ -3,7 +3,7 @@
   'use strict';
 
   const META = {
-    co2:         { label: 'CO₂', unit: ' ppm', icon: '🌫️', color: '#ff6b6b', fill: 'rgba(255,107,107,0.12)', yfmt: v => v.toFixed(0) },
+    co2:         { label: 'CO₂', unit: ' ppm', icon: '🫁', color: '#ff6b6b', fill: 'rgba(255,107,107,0.12)', yfmt: v => v.toFixed(0) },
     temperature: { label: 'Temperature', unit: ' °C', icon: '🌡️', color: '#4ecdc4', fill: 'rgba(78,205,196,0.12)', yfmt: v => v.toFixed(1) },
     humidity:    { label: 'Humidity', unit: ' %', icon: '💧', color: '#45b7d1', fill: 'rgba(69,183,209,0.12)', yfmt: v => v.toFixed(0) }
   };
