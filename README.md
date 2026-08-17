@@ -12,9 +12,10 @@ point** — no router, no cloud, no internet.
 
 ![Dashboard](docs/images/dashboard.png)
 
-> **About the screenshots:** the images in this README were rendered from the project's real
-> `data/www` assets against a mock backend, using **simulated sensor values**. They show the
-> actual UI, not readings from a live device.
+> **About the screenshots:** the UI screenshots in this README were rendered from the
+> project's real `data/www` assets against a mock backend, using **simulated sensor values**.
+> They show the actual interface, not readings from a live device. The hardware photos are of
+> the real build.
 
 ---
 
@@ -49,15 +50,17 @@ is aired.
 |---|---|
 | ![CSV preview](docs/images/files-preview.png) | ![Mobile dashboard](docs/images/dashboard-mobile.png) |
 
-<!-- Hardware photos: drop the files into docs/images/ and uncomment this block.
+And the hardware itself — during bring-up, and finished:
 
-| The build | Assembled |
+| Bring-up on the bench | The finished unit |
 |---|---|
-| ![Breadboard](docs/images/hardware-breadboard.jpg) | ![Enclosure](docs/images/hardware-enclosure.jpg) |
+| <img src="docs/images/hardware-wiring.jpg" width="330" alt="ESP32 DevKit wired to the SCD30, OLED and MicroSD adapter, with the display lit"> | <img src="docs/images/hardware-enclosure.jpg" width="330" alt="The assembled monitor in its 3D-printed vented enclosure"> |
 
-Suggested shots: the wired-up breadboard from above, a close-up of the OLED showing live
-values, and the finished unit in its enclosure.
--->
+Left: the DevKit wired to all three peripherals, with the OLED already driving text. Right:
+the same electronics in a 3D-printed case. The perforated panels are functional rather than
+decorative — an NDIR sensor measures the air that reaches it, so the enclosure needs enough
+cross-flow that the reading tracks the room instead of a pocket of stale air, while still
+shielding the optical path from direct draughts.
 
 ---
 
